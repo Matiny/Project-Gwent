@@ -1,4 +1,4 @@
-
+/*--------- Card classes ----------*/
 class Card {
     constructor(nameInput, strengthInput, whichRow) {
         this.name = nameInput;
@@ -10,10 +10,7 @@ class Card {
 class Hero extends Card {
     constructor(nameInput, strengthInput, whichRow) {
         super(nameInput, strengthInput, whichRow);
-    }
-    strongWill(){
-        // Decide on the tactics that will prevent the Hero from losing or gaining strength
-        // Probably just return true, and only allow the card to be affected if strongWill() === true
+        this.strongWill = true;
     }
 }  
 
@@ -48,23 +45,23 @@ const northern = [
     geralt = new Hero("geralt", 15, "close"),
     ciri = new Hero("ciri", 15, "close"),
     vernon = new Hero("vernon", 10, "close"),
-    yennefer = new Hero("yennefer", 7),
-    triss = new Hero("triss", 7),
+    yennefer = new Hero("yennefer", 7, "ranged"),
+    triss = new Hero("triss", 7, "close"),
     zoltan = new Card("zoltan", 5, "close"),
-    bluestripes1 = new Team("blueStripes1", 4, "blue"),
-    bluestripes2 = new Team("blueStripes2", 4, "blue"),
-    bluestripes3 = new Team("blueStripes3", 4, "blue"),
-    crinfrid1 = new Team("crinfrid1", 4, "reavers"),
-    crinfrid2 = new Team("crinfrid2", 4, "reavers"),
-    crinfrid3 = new Team("crinfrid3", 4, "reavers"),
-    keira = new Card("keira", 4),
-    catapult1 = new Team("catapult1", 4, "catapult"),
-    catapult2 = new Team("catapult2", 4, "catapult"),
+    bluestripes1 = new Team("blueStripes1", 4, "close", "blue"),
+    bluestripes2 = new Team("blueStripes2", 4, "close", "blue"),
+    bluestripes3 = new Team("blueStripes3", 4, "close", "blue"),
+    crinfrid1 = new Team("crinfrid1", 4, "ranged", "reavers"),
+    crinfrid2 = new Team("crinfrid2", 4, "ranged", "reavers"),
+    crinfrid3 = new Team("crinfrid3", 4, "ranged", "reavers"),
+    keira = new Card("keira", 4, "ranged"),
+    catapult1 = new Team("catapult1", 4, "siege", "catapult"),
+    catapult2 = new Team("catapult2", 4, "siege", "catapult"),
     ves = new Card("ves", 5, "close"),
     sigi = new Spy("sigi", 4, "close"),
     stennis = new Spy("stennis", 5, "close"),
-    thaler = new Spy("thaler", 1),
-    medic = new Healer("medic", 5),
+    thaler = new Spy("thaler", 1, "siege"),
+    medic = new Healer("medic", 5, "siege"),
 ]
 
 class Player {
@@ -79,7 +76,11 @@ class Player {
         this.siegecombat = [];
         
         // Keeping score
+        this.closeScore = 0; // Display these in the page
+        this.rangeScore = 0;
+        this.siegeScore = 0;
         this.score = 0;
+
         this.roundsWon = 0; // Max 2, then game ends
     }
 
@@ -91,9 +92,41 @@ class Player {
         // Also make sure the hand array cannot "includes" the same card
     }
 
-    playCard() {
-        // Add logic to transfer the card from hand to whichRow
+    getScore() {
+        // Reset score before counting;
+        this.closeScore = 0;
+        this.rangeScore = 0;
+        this.siegeScore = 0;
+        this.closecombat.map((card) => {
+            this.closeScore += card.strength;
+        });
+        this.rangedcombat.map((card) => {
+            this.rangeScore += card.strength;
+        });
+
+        this.score = this.closeScore + this.rangeScore + this.siegeScore;
     }
+
+    playCard(theCard) {
+        // Add logic to transfer the card from hand to whichRow
+        if(theCard.row === "close") {
+            this.closecombat.push(theCard);
+        }
+        if(theCard.row === "ranged") {
+            this.rangedcombat.push(theCard);
+        }
+        if(theCard.row === "siege") {
+            this.siegecombat.push(theCard);
+        }
+        let handIndex = this.deck.indexOf(theCard)
+        this.hand.splice(handIndex, 1);
+        
+        this.getScore();
+    }
+
+    endTurn() {} // Add logic where the game automatically cycles back & forth
+    // Turns should end after a card has been played, and opponents be given the chance to play their card
+    passTurn() {}
 
     winRound() {
         // Add logic to start a new round and clear the board
@@ -101,7 +134,6 @@ class Player {
     }
 
     winGame() {
-        console.log(`${this.name} Wins!`); 
         /* Add additional logic to display the win screen 
         and either redirect (to final score screen) or reload page */
     }
@@ -119,7 +151,20 @@ let startGame = () => {
 
 startGame();
 
-console.log(You);
-console.log(Opponent);
+You.playCard(geralt);
+You.playCard(crinfrid1);
 
-// console.log(northern);
+/*--------- Weather functions ----------*/
+// Clear weather?? How will that work?
+let bitingFrost = () => {
+    You.closecombat.map((card) => {
+        if(!card.strongWill === true) {
+            card.strength = 1;
+        }
+    });
+    // Do the same for the opponent!
+}
+
+// bitingFrost();
+
+console.log(You);
