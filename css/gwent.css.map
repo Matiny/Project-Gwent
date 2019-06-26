@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,CAAC;EACH,UAAU,EAAE,qBAAqB,CAAA,SAAS,CAAC,MAAM,CAAC,MAAM,CAAC,KAAK;EAC9D,eAAe,EAAE,KAAK;EACtB,KAAK,EAAE,KAAK;CAAG",
+    "sources": [
+        "gwent.sass"
+    ],
+    "names": [],
+    "file": "gwent.css"
+}

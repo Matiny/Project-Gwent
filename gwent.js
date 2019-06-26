@@ -1,3 +1,6 @@
+/*--------- Fundamental Conditions ----------*/
+let playerTurn = true;
+
 /*--------- Card classes ----------*/
 class Card {
     constructor(nameInput, strengthInput, whichRow) {
@@ -118,7 +121,8 @@ class Player {
         if(theCard.row === "siege") {
             this.siegecombat.push(theCard);
         }
-        let handIndex = this.deck.indexOf(theCard)
+        let handIndex = this.hand.indexOf(theCard)
+
         this.hand.splice(handIndex, 1);
         
         this.getScore();
@@ -151,8 +155,8 @@ let startGame = () => {
 
 startGame();
 
-You.playCard(geralt);
-You.playCard(crinfrid1);
+You.playCard(You.hand[0]);
+// You.playCard(You.hand[1]);
 
 /*--------- Weather functions ----------*/
 // Clear weather?? How will that work?
