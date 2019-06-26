@@ -1,6 +1,90 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+* {
+  font-family: "Montserrat";
+  color: white;
+}
+
 body {
   background: url(../img/board.jpg) no-repeat center center fixed;
   background-size: cover;
   width: 100vw;
+}
+
+main {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
+
+main .box:hover {
+  border: 1px solid white;
+}
+
+main .hand-row {
+  position: absolute;
+  left: 25%;
+  top: 97.5%;
+  -webkit-transform: translate(-25%, -97.5%);
+          transform: translate(-25%, -97.5%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  height: 6.6vw;
+  width: 66vw;
+  border: 1px solid transparent;
+  -webkit-transition: border .33s ease-in-out;
+  transition: border .33s ease-in-out;
+}
+
+main .hand-row img {
+  height: 95%;
+  padding: 0 0.5%;
+}
+
+main .hand-row img:hover {
+  -webkit-transition: -webkit-transform .25s;
+  transition: -webkit-transform .25s;
+  transition: transform .25s;
+  transition: transform .25s, -webkit-transform .25s;
+  -webkit-transform: translateY(-25%);
+          transform: translateY(-25%);
+  cursor: pointer;
+}
+
+main .your-field {
+  position: absolute;
+  left: 25%;
+  top: 70%;
+  -webkit-transform: translate(-25%, -70%);
+          transform: translate(-25%, -70%);
+  height: 18vw;
+  width: 66vw;
+}
+
+main .your-field div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  height: 33%;
+  width: 100%;
+}
+
+main .your-field div .close-score, main .your-field div .ranged-score, main .your-field div .siege-score {
+  margin-left: auto;
+  padding: 0 2%;
 }
 /*# sourceMappingURL=gwent.css.map */

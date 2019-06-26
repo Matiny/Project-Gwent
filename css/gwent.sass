@@ -1,4 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+*
+  font-family: "Montserrat"
+  color: white
+  
+@mixin positions($number1, $number2)
+   position: absolute
+   left: $number1
+   top: $number2
+   transform: translate(-$number1,-$number2)
+  
 body 
   background: url(../img/board.jpg)no-repeat center center fixed
   background-size: cover
   width: 100vw
+
+main
+  position: relative
+  height: 100vh
+  width: 100vw
+
+  .box:hover
+    // background-color: rgba(255, 255, 255, .33)
+    border: 1px solid white
+
+  .hand-row
+    @include positions(25%, 97.5%)
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: rgba(255, 255, 255, .20)
+    height: 6.6vw;
+    width: 66vw;
+    border: 1px solid transparent
+    transition: border .33s ease-in-out
+    
+    img
+      height: 95%
+      padding: 0 0.5%
+      &:hover
+        transition: transform .25s
+        transform: translateY(-25%)
+        cursor: pointer
+
+  .your-field
+    @include positions(25%, 70%)
+    height: 18vw
+    width: 66vw
+    div
+      display: flex
+      justify-content: center
+      align-items: center
+      background-color: rgba(255, 255, 255, .20)
+      height: 33%
+      width: 100%
+      .close-score, .ranged-score, .siege-score
+        margin-left: auto
+        padding: 0 2%

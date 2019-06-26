@@ -87,12 +87,19 @@ class Player {
         this.roundsWon = 0; // Max 2, then game ends
     }
 
+    renderHand() {
+        let cardHTML = "";
+        for (let i = 0; i < this.hand.length; i++) {
+            cardHTML += `<img src="img/${this.hand[i].name}.jpg" alt="${this.hand[i].name}" class="${this.hand[i].name}">`;
+            $(".hand-row").html(cardHTML);
+        }
+    }
+
     drawCard() {
         let randomIndex = Math.floor(Math.random() * this.deck.length);
         this.hand.push(this.deck[randomIndex]);
         this.deck.splice(randomIndex, 1);
-
-        // Also make sure the hand array cannot "includes" the same card
+        this.renderHand();
     }
 
     getScore() {
@@ -155,8 +162,7 @@ let startGame = () => {
 
 startGame();
 
-You.playCard(You.hand[0]);
-// You.playCard(You.hand[1]);
+// You.playCard(You.hand[0]);
 
 /*--------- Weather functions ----------*/
 // Clear weather?? How will that work?
@@ -171,4 +177,21 @@ let bitingFrost = () => {
 
 // bitingFrost();
 
-console.log(You);
+// console.log(You);
+
+
+/*--------- UI Playing functions ----------*/
+
+// Only run function if it's player's turn, and only allow 1 to be played 
+// Thus, set playerTurn to false at the bottom of playCard
+$(".hand-row img").click(function () {
+    let classname = $(this).attr("class");
+    const theCard = You.hand.find(card => card.name === classname);
+    You.playCard(theCard);
+    // console.log(You.hand.find(card => card.name === classname));
+    console.log("Card updated!");
+    console.log(You);
+    
+    
+    
+})
