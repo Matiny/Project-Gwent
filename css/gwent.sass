@@ -20,10 +20,6 @@ main
   height: 100vh
   width: 100vw
 
-  .box:hover
-    // background-color: rgba(255, 255, 255, .33)
-    border: 1px solid white
-
   .hand-row
     @include positions(25%, 97.5%)
     display: flex
@@ -32,8 +28,6 @@ main
     background-color: rgba(255, 255, 255, .20)
     height: 6.6vw;
     width: 66vw;
-    border: 1px solid transparent
-    transition: border .33s ease-in-out
     
     img
       height: 95%
@@ -45,6 +39,20 @@ main
 
   .your-field
     @include positions(25%, 70%)
+    div
+      &.close-row
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+      &.ranged-row
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+
+  .their-field
+    @include positions(25%, 7.5%)  
+    div
+      &.siege-row
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+      &.ranged-row
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25)   
+  .your-field, .their-field
     height: 18vw
     width: 66vw
     div
@@ -54,6 +62,24 @@ main
       background-color: rgba(255, 255, 255, .20)
       height: 33%
       width: 100%
+      position: relative
+      &.close-row
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+      &.ranged-row
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+
+      img
+          height: 95%
+          padding: 0 0.5%
+          &:hover
+            transition: transform .25s
+            transform: translateY(-25%)
+            cursor: pointer
+
       .close-score, .ranged-score, .siege-score
-        margin-left: auto
+        @include positions(98%, 50%)
         padding: 0 2%
+      
+      .close-score
+       
+

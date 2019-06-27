@@ -16,10 +16,6 @@ main {
   width: 100vw;
 }
 
-main .box:hover {
-  border: 1px solid white;
-}
-
 main .hand-row {
   position: absolute;
   left: 25%;
@@ -38,9 +34,6 @@ main .hand-row {
   background-color: rgba(255, 255, 255, 0.2);
   height: 6.6vw;
   width: 66vw;
-  border: 1px solid transparent;
-  -webkit-transition: border .33s ease-in-out;
-  transition: border .33s ease-in-out;
 }
 
 main .hand-row img {
@@ -64,11 +57,38 @@ main .your-field {
   top: 70%;
   -webkit-transform: translate(-25%, -70%);
           transform: translate(-25%, -70%);
+}
+
+main .your-field div.close-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+main .your-field div.ranged-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+main .their-field {
+  position: absolute;
+  left: 25%;
+  top: 7.5%;
+  -webkit-transform: translate(-25%, -7.5%);
+          transform: translate(-25%, -7.5%);
+}
+
+main .their-field div.siege-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+main .their-field div.ranged-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+main .your-field, main .their-field {
   height: 18vw;
   width: 66vw;
 }
 
-main .your-field div {
+main .your-field div, main .their-field div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -81,10 +101,38 @@ main .your-field div {
   background-color: rgba(255, 255, 255, 0.2);
   height: 33%;
   width: 100%;
+  position: relative;
 }
 
-main .your-field div .close-score, main .your-field div .ranged-score, main .your-field div .siege-score {
-  margin-left: auto;
+main .your-field div.close-row, main .their-field div.close-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+main .your-field div.ranged-row, main .their-field div.ranged-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+main .your-field div img, main .their-field div img {
+  height: 95%;
+  padding: 0 0.5%;
+}
+
+main .your-field div img:hover, main .their-field div img:hover {
+  -webkit-transition: -webkit-transform .25s;
+  transition: -webkit-transform .25s;
+  transition: transform .25s;
+  transition: transform .25s, -webkit-transform .25s;
+  -webkit-transform: translateY(-25%);
+          transform: translateY(-25%);
+  cursor: pointer;
+}
+
+main .your-field div .close-score, main .your-field div .ranged-score, main .your-field div .siege-score, main .their-field div .close-score, main .their-field div .ranged-score, main .their-field div .siege-score {
+  position: absolute;
+  left: 98%;
+  top: 50%;
+  -webkit-transform: translate(-98%, -50%);
+          transform: translate(-98%, -50%);
   padding: 0 2%;
 }
 /*# sourceMappingURL=gwent.css.map */

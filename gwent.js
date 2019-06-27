@@ -1,5 +1,6 @@
 /*--------- Fundamental Conditions ----------*/
-let playerTurn = true;
+let playerTurn = false;
+let round = 1;
 
 /*--------- Card classes ----------*/
 class Card {
@@ -85,21 +86,55 @@ class Player {
         this.score = 0;
 
         this.roundsWon = 0; // Max 2, then game ends
+
+        this.pass = false;
     }
 
-    renderHand() {
+    renderHand() {        
         let cardHTML = "";
         for (let i = 0; i < this.hand.length; i++) {
             cardHTML += `<img src="img/${this.hand[i].name}.jpg" alt="${this.hand[i].name}" class="${this.hand[i].name}">`;
-            $(".hand-row").html(cardHTML);
         }
+        $(".hand-row").html(cardHTML);
+    }
+
+    renderClose() {        
+        let cardHTML = "";
+        for (let i = 0; i < this.closecombat.length; i++) {
+            const cardName = this.closecombat[i].name;
+            cardHTML += `<img src="img/${cardName}.jpg" alt="${cardName}" class="${cardName}">`;
+        }
+        cardHTML += `<span class="close-score">${this.closeScore}</span>`;
+        let whichField = playerTurn ? ".your-field" : ".their-field";
+        $(`${whichField} .close-row`).html(cardHTML);
+    }
+
+    renderRange() {        
+        let cardHTML = "";
+        for (let i = 0; i < this.rangedcombat.length; i++) {
+            const cardName = this.rangedcombat[i].name;
+            cardHTML += `<img src="img/${cardName}.jpg" alt="${cardName}" class="${cardName}">`;
+        }
+        cardHTML += `<span class="ranged-score">${this.rangeScore}</span>`
+        let whichField = playerTurn ? ".your-field" : ".their-field"
+        $(`${whichField} .ranged-row`).html(cardHTML);
+    }
+
+    renderSiege() {        
+        let cardHTML = "";
+        for (let i = 0; i < this.siegecombat.length; i++) {
+            const cardName = this.siegecombat[i].name;
+            cardHTML += `<img src="img/${cardName}.jpg" alt="${cardName}" class="${cardName}">`;
+        }
+        cardHTML += `<span class="siege-score">${this.siegeScore}</span>`
+        let whichField = playerTurn ? ".your-field" : ".their-field"
+        $(`${whichField} .siege-row`).html(cardHTML);
     }
 
     drawCard() {
         let randomIndex = Math.floor(Math.random() * this.deck.length);
         this.hand.push(this.deck[randomIndex]);
         this.deck.splice(randomIndex, 1);
-        this.renderHand();
     }
 
     getScore() {
@@ -113,6 +148,9 @@ class Player {
         this.rangedcombat.map((card) => {
             this.rangeScore += card.strength;
         });
+        this.siegecombat.map((card) => {
+            this.siegeScore += card.strength;
+        });
 
         this.score = this.closeScore + this.rangeScore + this.siegeScore;
     }
@@ -121,23 +159,30 @@ class Player {
         // Add logic to transfer the card from hand to whichRow
         if(theCard.row === "close") {
             this.closecombat.push(theCard);
+            this.getScore();
+            this.renderClose();
         }
         if(theCard.row === "ranged") {
             this.rangedcombat.push(theCard);
+            this.getScore();
+            this.renderRange();
         }
         if(theCard.row === "siege") {
             this.siegecombat.push(theCard);
+            this.getScore();
+            this.renderSiege();
         }
         let handIndex = this.hand.indexOf(theCard)
 
         this.hand.splice(handIndex, 1);
+
+        // this.renderHand();
         
-        this.getScore();
     }
 
-    endTurn() {} // Add logic where the game automatically cycles back & forth
-    // Turns should end after a card has been played, and opponents be given the chance to play their card
-    passTurn() {}
+    passTurn() {
+        this.pass = true;
+    }
 
     winRound() {
         // Add logic to start a new round and clear the board
@@ -150,6 +195,13 @@ class Player {
     }
 }
 
+function endRound() {
+    // round++
+    // Clear all cards from board to discard pile
+    // Clear all weather conditions
+    // Show "Round 2"
+}
+
 let You = new Player([...northern]);
 let Opponent = new Player([...northern]);
 
@@ -158,6 +210,7 @@ let startGame = () => {
         You.drawCard();
         Opponent.drawCard();
     }
+    You.renderHand();
 }
 
 startGame();
@@ -177,21 +230,56 @@ let bitingFrost = () => {
 
 // bitingFrost();
 
-// console.log(You);
+// console.log(You.hand);
 
 
 /*--------- UI Playing functions ----------*/
 
 // Only run function if it's player's turn, and only allow 1 to be played 
 // Thus, set playerTurn to false at the bottom of playCard
-$(".hand-row img").click(function () {
-    let classname = $(this).attr("class");
-    const theCard = You.hand.find(card => card.name === classname);
-    You.playCard(theCard);
-    // console.log(You.hand.find(card => card.name === classname));
-    console.log("Card updated!");
-    console.log(You);
-    
-    
-    
-})
+function opponentMove() {
+    Opponent.playCard(Opponent.hand[Math.floor(Math.random() * Opponent.hand.length)])
+        console.log(Opponent);
+        playerTurn = true;
+}
+
+function playerMove() {
+    $("body").on("click", ".hand-row img", function () {
+        let classname = $(this).attr("class");
+        const theCard = You.hand.find(card => card.name === classname);
+        You.playCard(theCard);
+        console.log(You);
+        playerTurn = false;
+    })
+}
+
+console.log(You);
+
+
+function game() {
+    if (playerTurn) {
+        // playerMove();
+        $("body").on("click", ".hand-row img", function () {
+            let classname = $(this).attr("class");
+            const theCard = You.hand.find(card => card.name === classname);
+            You.playCard(theCard);
+            console.log(You);
+            playerTurn = false;
+            You.renderHand()
+        })
+    }
+    else {
+        // opponentMove();
+        Opponent.playCard(Opponent.hand[Math.floor(Math.random() * Opponent.hand.length)])
+        console.log(Opponent);
+        playerTurn = true;
+        You.renderHand()
+    }
+}
+
+setInterval(() => {
+    game();
+}, 1000)
+
+
+
