@@ -22,6 +22,21 @@ main
   height: 100vh
   width: 100vw
 
+  .splash-screen
+    position: absolute
+    background: url(../img/gwent-image.jpg)no-repeat center center fixed
+    background-size: cover
+    width: 100vw
+    height: 100vh
+    z-index: 10;
+    button
+      @include positions(50%, 85%)
+      background: rgba(0,0,0, .75)
+      border: none
+      padding: 1.5%
+      font-size: 2vw
+      cursor: pointer
+
   .your-score
     @include positions(90%, 54.5%)
     height: 5vw

@@ -1,5 +1,5 @@
 /*--------- Fundamental Conditions ----------*/
-let playerTurn = false;
+let playerTurn = true;
 let round = 1;
 
 /*--------- Card classes ----------*/
@@ -307,9 +307,6 @@ function playerMove() {
 }
 
 
-
-
-
 function game() {
     if (You.pass === true && Opponent.pass === true) {
         endRound();
@@ -327,5 +324,10 @@ function game() {
 
 let gameInterval = setInterval(() => {
     game();
-}, 1000)
+}, 1000) 
+
+$('button').click(function () {
+    $('.splash-screen').fadeOut();
+})
+
 
