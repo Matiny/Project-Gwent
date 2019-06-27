@@ -2,12 +2,14 @@
 * {
   font-family: "Montserrat";
   color: white;
+  font-size: 1.5vw;
 }
 
 body {
   background: url(../img/board.jpg) no-repeat center center fixed;
   background-size: cover;
   width: 100vw;
+  overflow: hidden;
 }
 
 main {
@@ -16,12 +18,57 @@ main {
   width: 100vw;
 }
 
+main .your-score {
+  position: absolute;
+  left: 90%;
+  top: 54.5%;
+  -webkit-transform: translate(-90%, -54.5%);
+          transform: translate(-90%, -54.5%);
+  height: 5vw;
+  width: 15vw;
+}
+
+main .opponent-score {
+  position: absolute;
+  left: 90%;
+  top: 36%;
+  -webkit-transform: translate(-90%, -36%);
+          transform: translate(-90%, -36%);
+  height: 5vw;
+  width: 15vw;
+}
+
+main .your-card {
+  position: absolute;
+  z-index: 3;
+  top: 100%;
+  left: 7.5%;
+  opacity: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 25vw;
+  width: 20vw;
+  -webkit-transition: top .25s ease-out, opacity .25s ease-out;
+  transition: top .25s ease-out, opacity .25s ease-out;
+}
+
+main .your-card img {
+  height: 100%;
+  position: relative;
+  z-index: 10;
+}
+
 main .hand-row {
   position: absolute;
   left: 25%;
   top: 97.5%;
   -webkit-transform: translate(-25%, -97.5%);
           transform: translate(-25%, -97.5%);
+  z-index: 3;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -46,8 +93,8 @@ main .hand-row img:hover {
   transition: -webkit-transform .25s;
   transition: transform .25s;
   transition: transform .25s, -webkit-transform .25s;
-  -webkit-transform: translateY(-25%);
-          transform: translateY(-25%);
+  -webkit-transform: translateY(-100%) scale(3);
+          transform: translateY(-100%) scale(3);
   cursor: pointer;
 }
 
@@ -118,12 +165,12 @@ main .your-field div img, main .their-field div img {
 }
 
 main .your-field div img:hover, main .their-field div img:hover {
+  -webkit-transform: scale(3);
+          transform: scale(3);
   -webkit-transition: -webkit-transform .25s;
   transition: -webkit-transform .25s;
   transition: transform .25s;
   transition: transform .25s, -webkit-transform .25s;
-  -webkit-transform: translateY(-25%);
-          transform: translateY(-25%);
   cursor: pointer;
 }
 

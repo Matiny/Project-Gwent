@@ -55,12 +55,12 @@ const northern = [
     bluestripes1 = new Team("blueStripes1", 4, "close", "blue"),
     bluestripes2 = new Team("blueStripes2", 4, "close", "blue"),
     bluestripes3 = new Team("blueStripes3", 4, "close", "blue"),
-    crinfrid1 = new Team("crinfrid1", 4, "ranged", "reavers"),
-    crinfrid2 = new Team("crinfrid2", 4, "ranged", "reavers"),
-    crinfrid3 = new Team("crinfrid3", 4, "ranged", "reavers"),
+    crinfrid1 = new Team("crinfrid1", 5, "ranged", "reavers"),
+    crinfrid2 = new Team("crinfrid2", 5, "ranged", "reavers"),
+    crinfrid3 = new Team("crinfrid3", 5, "ranged", "reavers"),
     keira = new Card("keira", 4, "ranged"),
-    catapult1 = new Team("catapult1", 4, "siege", "catapult"),
-    catapult2 = new Team("catapult2", 4, "siege", "catapult"),
+    catapult1 = new Team("catapult1", 8, "siege", "catapult"),
+    catapult2 = new Team("catapult2", 8, "siege", "catapult"),
     ves = new Card("ves", 5, "close"),
     sigi = new Spy("sigi", 4, "close"),
     stennis = new Spy("stennis", 5, "close"),
@@ -142,13 +142,29 @@ class Player {
         this.closeScore = 0;
         this.rangeScore = 0;
         this.siegeScore = 0;
-        this.closecombat.map((card) => {
+        let blue = [];
+        let reavers = [];
+        let catapults = [];
+        this.closecombat.forEach((card) => {
+            if (card.teamName) {
+                blue.push(card);
+                card.strength *= blue.length;
+            }
             this.closeScore += card.strength;
         });
-        this.rangedcombat.map((card) => {
+        this.rangedcombat.forEach((card) => {
+            if (card.teamName) {
+                reavers.push(card);
+                card.strength *= reavers.length;
+            }
+            
             this.rangeScore += card.strength;
         });
-        this.siegecombat.map((card) => {
+        this.siegecombat.forEach((card) => {
+            if (card.teamName) {
+                catapults.push(card);
+                card.strength *= catapults.length;
+            }
             this.siegeScore += card.strength;
         });
 
@@ -196,7 +212,15 @@ class Player {
 }
 
 function endRound() {
-    // round++
+    if (You.score > Opponent.score) {
+        alert("You have won the round!");
+        You.roundsWon++;
+    }
+    else if (You.score < Opponent.score) {
+        alert("You have lost the round!");
+        Opponent.roundsWon++;
+    }
+    round++;
     // Clear all cards from board to discard pile
     // Clear all weather conditions
     // Show "Round 2"
@@ -238,48 +262,70 @@ let bitingFrost = () => {
 // Only run function if it's player's turn, and only allow 1 to be played 
 // Thus, set playerTurn to false at the bottom of playCard
 function opponentMove() {
-    Opponent.playCard(Opponent.hand[Math.floor(Math.random() * Opponent.hand.length)])
-        console.log(Opponent);
+    // Condition in which opponent passes
+
+    if (Opponent.score > 20 && Math.random() > 0.5) {
+        Opponent.passTurn();
         playerTurn = true;
+    }
+    if (!Opponent.pass) {
+        Opponent.playCard(Opponent.hand[Math.floor(Math.random() * Opponent.hand.length)])
+    }
+    else {
+        alert("Opponent has passed for the rest of round!");
+    }
+    
+    if (You.pass === false) {
+        playerTurn = true;
+    }
+    console.log(`Opponent: ${Opponent.pass}`);
+   
 }
+
+
 
 function playerMove() {
+    $('body').keydown(function(e){
+        if(e.keyCode == 32){
+            You.passTurn();
+            playerTurn = false;
+            console.log(You.pass);
+        }
+     });
     $("body").on("click", ".hand-row img", function () {
         let classname = $(this).attr("class");
+        $(".your-card").html(`<img src="img/${classname}.jpg" alt="">`).addClass("your-choice");
+        setTimeout(function(){ $(".your-card").removeClass("your-choice") }, 1500);
         const theCard = You.hand.find(card => card.name === classname);
         You.playCard(theCard);
-        console.log(You);
-        playerTurn = false;
+        You.renderHand();
+        if (Opponent.pass === false) {
+            playerTurn = false;
+        }
     })
+    
 }
 
-console.log(You);
+
+
 
 
 function game() {
-    if (playerTurn) {
-        // playerMove();
-        $("body").on("click", ".hand-row img", function () {
-            let classname = $(this).attr("class");
-            const theCard = You.hand.find(card => card.name === classname);
-            You.playCard(theCard);
-            console.log(You);
-            playerTurn = false;
-            You.renderHand()
-        })
+    if (You.pass === true && Opponent.pass === true) {
+        endRound();
+        clearInterval(gameInterval);
     }
-    else {
-        // opponentMove();
-        Opponent.playCard(Opponent.hand[Math.floor(Math.random() * Opponent.hand.length)])
-        console.log(Opponent);
-        playerTurn = true;
-        You.renderHand()
+    else if (playerTurn === true) {
+        playerMove();
+        $(".your-score").text(`Your Total: ${You.score} pts`)
+    }
+    else if (playerTurn === false) {
+        opponentMove();
+        $(".opponent-score").text(`Enemy's Total: ${Opponent.score} pts`);
     }
 }
 
-setInterval(() => {
+let gameInterval = setInterval(() => {
     game();
 }, 1000)
-
-
 

@@ -3,6 +3,7 @@
 *
   font-family: "Montserrat"
   color: white
+  font-size: 1.5vw
   
 @mixin positions($number1, $number2)
    position: absolute
@@ -14,14 +15,47 @@ body
   background: url(../img/board.jpg)no-repeat center center fixed
   background-size: cover
   width: 100vw
+  overflow: hidden
 
 main
   position: relative
   height: 100vh
   width: 100vw
 
+  .your-score
+    @include positions(90%, 54.5%)
+    height: 5vw
+    width: 15vw
+
+  .opponent-score
+    @include positions(90%, 36%)
+    height: 5vw
+    width: 15vw
+
+  .your-card 
+    position: absolute
+    z-index: 3
+    top: 100%
+    left: 7.5%
+    opacity: 0
+    display: flex
+    justify-content: center
+    height: 25vw
+    width: 20vw
+    transition: top .25s ease-out, opacity .25s ease-out
+
+    img
+      height: 100%
+      position: relative
+      z-index: 10
+  
+  // .your-choice
+  //   top: 40%
+  //   opacity: 1
+
   .hand-row
     @include positions(25%, 97.5%)
+    z-index: 3
     display: flex
     justify-content: center
     align-items: center
@@ -34,7 +68,7 @@ main
       padding: 0 0.5%
       &:hover
         transition: transform .25s
-        transform: translateY(-25%)
+        transform: translateY(-100%) scale(3)
         cursor: pointer
 
   .your-field
@@ -42,6 +76,7 @@ main
     div
       &.close-row
         border-bottom: 1px solid rgba(255, 255, 255, 0.25)
+       
       &.ranged-row
         border-bottom: 1px solid rgba(255, 255, 255, 0.25)
 
@@ -67,14 +102,16 @@ main
         border-bottom: 1px solid rgba(255, 255, 255, 0.25)
       &.ranged-row
         border-bottom: 1px solid rgba(255, 255, 255, 0.25)
-
       img
           height: 95%
           padding: 0 0.5%
+          
+          
           &:hover
+            transform: scale(3)
             transition: transform .25s
-            transform: translateY(-25%)
             cursor: pointer
+            
 
       .close-score, .ranged-score, .siege-score
         @include positions(98%, 50%)
@@ -83,3 +120,4 @@ main
       .close-score
        
 
+  
